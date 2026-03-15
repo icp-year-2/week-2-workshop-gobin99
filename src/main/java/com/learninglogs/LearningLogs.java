@@ -143,9 +143,45 @@ public class LearningLogs {
                 //   }
                 // ============================================================
                 case "3" -> {
-                    // Write your code here
-                    System.out.println("TODO: Implement Add Entry\n");
+                    ArrayList<Topic> topics = topicDao.fetchAllTopics();
+
+                    if (topics == null || topics.isEmpty()) {
+                        System.out.println("No topics yet. Add a topic first!\n");
+                    } else {
+                        System.out.println("\n── Select a Topic ───────────────");
+                        for (Topic topic : topics) {
+                            System.out.println(" " + topic);
+                        }
+                        System.out.println("─────────────────────────────────");
+                        System.out.print("Enter topic ID: ");
+                        String idInput = scanner.nextLine().trim();
+
+                        try {
+                            int topicId = Integer.parseInt(idInput);
+                            System.out.print("Enter your learning notes: ");
+                            String text = scanner.nextLine().trim();
+
+                            if (text.isEmpty()) {
+                                System.out.println("Entry text cannot be empty!\n");
+                            } else {
+                                Entry entry = new Entry(text, topicId);
+                                boolean success = entryDao.insertEntry(entry);
+
+                                if (success) {
+                                    System.out.println("Entry added under topic ID: " + topicId);
+                                } else {
+                                    System.out.println("Failed to add entry.\n");
+
+                                }
+                                System.out.println();
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter a valid number!\n");
+                        }
+
+                    }
                 }
+
                 // ============================================================
                 // TODO 10: View all Entries (+25 XP — ACHIEVEMENT: Operator!)
                 // ============================================================
@@ -172,65 +208,106 @@ public class LearningLogs {
                 // ============================================================
                 case "4" -> {
                     // Write your code here
-                    System.out.println("TODO: Implement View Entries\n");
+                    ArrayList<Entry> entries = entryDao.fetchAllEntries();
+                    if (entries == null || entries.isEmpty()) {
+                        System.out.println("No entries yet. Add your first entry!\n");
+                    } else {
+                        System.out.println("\n── All Entries ──────────────────");
+                        for (Entry entry : entries) {
+                            System.out.println(" " + entry);
+                        }
+                        System.out.println("───────────────────\n");
+                    }
                 }
-                // ============================================================
-                // BONUS TODO 12: View Entries by Topic (+20 XP)
-                // ============================================================
-                // When the user selects option 5, you should:
-                //   1. Fetch and display all topics
-                //   2. Ask the user to enter a topic ID
-                //   3. Call entryDao.fetchEntriesByTopicId(topicId)
-                //   4. Display the filtered entries
-                //
-                // This combines the topic-selection pattern from TODO 9
-                // with the entry-display pattern from TODO 10.
-                //
-                // Requires: BONUS TODO 11 (fetchEntriesByTopicId)
-                //
-                // Hint:
-                //   case "5" -> {
-                //       ArrayList<Topic> topics = topicDao.fetchAllTopics();
-                //       if (topics == null || topics.isEmpty()) {
-                //           System.out.println("No topics yet. Add a topic first!\n");
-                //       } else {
-                //           System.out.println("\n── Select a Topic ───────────────");
-                //           for (Topic topic : topics) {
-                //               System.out.println("  " + topic);
-                //           }
-                //           System.out.println("─────────────────────────────────");
-                //           System.out.print("Enter topic ID: ");
-                //           String idInput = scanner.nextLine().trim();
-                //           try {
-                //               int topicId = Integer.parseInt(idInput);
-                //               ArrayList<Entry> entries = entryDao.fetchEntriesByTopicId(topicId);
-                //               if (entries == null || entries.isEmpty()) {
-                //                   System.out.println("No entries for this topic.\n");
-                //               } else {
-                //                   System.out.println("\n── Entries for Topic " + topicId + " ──");
-                //                   for (Entry entry : entries) {
-                //                       System.out.println("  " + entry);
-                //                   }
-                //                   System.out.println("─────────────────────────────────\n");
-                //               }
-                //           } catch (NumberFormatException e) {
-                //               System.out.println("Please enter a valid number!\n");
-                //           }
-                //       }
-                //   }
-                // ============================================================
-                case "5" -> {
-                    // Write your code here
-                    System.out.println("TODO: Implement View Entries by Topic\n");
+
+
+            // ============================================================
+            // BONUS TODO 12: View Entries by Topic (+20 XP)
+            // ============================================================
+            // When the user selects option 5, you should:
+            //   1. Fetch and display all topics
+            //   2. Ask the user to enter a topic ID
+            //   3. Call entryDao.fetchEntriesByTopicId(topicId)
+            //   4. Display the filtered entries
+            //
+            // This combines the topic-selection pattern from TODO 9
+            // with the entry-display pattern from TODO 10.
+            //
+            // Requires: BONUS TODO 11 (fetchEntriesByTopicId)
+            //
+            // Hint:
+            //   case "5" -> {
+            //       ArrayList<Topic> topics = topicDao.fetchAllTopics();
+            //       if (topics == null || topics.isEmpty()) {
+            //           System.out.println("No topics yet. Add a topic first!\n");
+            //       } else {
+            //           System.out.println("\n── Select a Topic ───────────────");
+            //           for (Topic topic : topics) {
+            //               System.out.println("  " + topic);
+            //           }
+            //           System.out.println("─────────────────────────────────");
+            //           System.out.print("Enter topic ID: ");
+            //           String idInput = scanner.nextLine().trim();
+            //           try {
+            //               int topicId = Integer.parseInt(idInput);
+            //               ArrayList<Entry> entries = entryDao.fetchEntriesByTopicId(topicId);
+            //               if (entries == null || entries.isEmpty()) {
+            //                   System.out.println("No entries for this topic.\n");
+            //               } else {
+            //                   System.out.println("\n── Entries for Topic " + topicId + " ──");
+            //                   for (Entry entry : entries) {
+            //                       System.out.println("  " + entry);
+            //                   }
+            //                   System.out.println("─────────────────────────────────\n");
+            //               }
+            //           } catch (NumberFormatException e) {
+            //               System.out.println("Please enter a valid number!\n");
+            //           }
+            //       }
+            //   }
+            // ============================================================
+
+            case "5" -> {
+                ArrayList<Topic> topics = topicDao.fetchAllTopics();
+                if (topics == null || topics.isEmpty()) {
+                    System.out.println("No topics yet. Add a topic first!\n");
+                } else {
+                    System.out.println("\n - Select a topic --------");
+                    for (Topic topic : topics) {
+                        System.out.println(" " + topic);
+                    }
+                    System.out.println("---------------------------");
+                    System.out.println("Enter topic ID: ");
+                    String idInput = scanner.nextLine().trim();
+
+                    try {
+                        int topicId = Integer.parseInt(idInput);
+                        ArrayList<Entry> entries = entryDao.fetchEntriesByTopicId(topicId);
+                        if (entries == null || entries.isEmpty()) {
+                            System.out.println("No entries for this topic.\n");
+                        } else {
+                            System.out.println("\n -----entries for topics " + topicId + "---");
+                            for (Entry entry : entries) {
+                                System.out.println(" " + entry);
+                            }
+                            System.out.println("────────────────────────────────\n");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Please enter avalid number!\n");
+                    }
                 }
+            }
+
                 case "6" -> {
                     running = false;
-                    System.out.println("\nHappy Learning! See you next time.\n");
+                    System.out.print("\nHappy Learning! See you nect time.\n");
                 }
                 default -> System.out.println("Invalid option. Please choose 1-6.\n");
             }
         }
-
         scanner.close();
     }
 }
+
+
+
